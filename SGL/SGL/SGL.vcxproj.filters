@@ -30,6 +30,12 @@
     <ClInclude Include="inc\common_header.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="inc\sglut.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\color_buffer.cpp">
@@ -39,6 +45,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\image.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sgl_window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include <atlbase.h>
 
 #include "image.h"
+#include "utils.h"
 
 #define CHECK(S) assert((S) == S_OK)
 
@@ -45,28 +46,6 @@ void img_lib_dispose() {
     ::CoUninitialize();
 }
 
-static wchar_t * _char2wchar_t(const char *str) {
-    int len = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
-    if (len == 0){
-        return NULL;
-    }
-    wchar_t *buf = (wchar_t*)malloc(sizeof(wchar_t)* (len + 1));
-    MultiByteToWideChar(CP_UTF8, 0, str, -1, buf, len);
-
-    return buf;
-}
-
-static char * _wchar_t2char(const wchar_t *str) {
-    int len = WideCharToMultiByte(CP_UTF8, 0, str, -1, NULL, 0, NULL, NULL);
-    if (len == 0){
-        return NULL;
-    }
-    char* buf = (char*)malloc(sizeof(char)* (len + 1));
-    WideCharToMultiByte(CP_UTF8, 0, str, -1, buf, len, NULL, NULL);
-
-    return buf;
-}
-
 static uint _get_image_stride(uint width, uint bpp) {
     assert(bpp % 8 == 0);
     uint byteCount = bpp / 8;
@@ -80,7 +59,7 @@ void img_load_image(const char *path, image_data *data) {
         img_lib_init();
     }
 
-    wchar_t *wpath = _char2wchar_t(path);
+    wchar_t *wpath = char2wchar_t(path);
     CHECK(s_handler->factory->CreateDecoderFromFilename(
         wpath,
         nullptr,

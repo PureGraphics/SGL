@@ -8,7 +8,7 @@ public:
     }
     ~interface_buffer() {}
 public:
-    virtual void set_viewport(int w, int h);
+    virtual void set_viewport(int w, int h) = 0;
 protected:
     int _buffer_w;
     int _buffer_h;

@@ -93,6 +93,7 @@
     <ClCompile Include="src\sgl.cpp" />
     <ClCompile Include="src\sgl_window.cpp" />
     <ClCompile Include="src\utils.cpp" />
+    <ClCompile Include="test\triangle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

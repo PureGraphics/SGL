@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+#include "GL/glew.h"
+
 #define CHECK() \
     assert(_buffer_w > 0 && _buffer_h < 3000); \
 
@@ -29,7 +31,8 @@ void color::copy(const color &c) {
 }
 
 color_buffer::color_buffer()
-:interface_buffer() {
+:interface_buffer(),
+ _pixels(nullptr) {
     
 }
 
@@ -49,7 +52,7 @@ void color_buffer::set_viewport(int w, int h) {
 
 void color_buffer::write_color(int x, int y, color c) {
     CHECK();
-    color *pc = _buffer[y * _buffer_w + x];
+    color *pc = _buffer[(_buffer_h - y - 40) * _buffer_w + x];
     pc->copy(c);
 }
 
@@ -57,14 +60,29 @@ void color_buffer::write_colors(int x, int y, image_data *img) {
     
 }
 
+void color_buffer::clear() {
+    memset(_pixels, 0, _buffer.size() * 4);
+}
+
 void color_buffer::flush() {
-    
+    int i = 0;
+    for (int y = 0; y < _buffer_h; y++) {
+        for (int x = 0; x < _buffer_w; x++) {
+            color *pc = _buffer[y * _buffer_w + x];
+            _pixels[i++] = pc->r & 0xff;
+            _pixels[i++] = pc->g & 0xff;
+            _pixels[i++] = pc->b & 0xff;
+            _pixels[i++] = pc->a & 0xff;
+        }
+    }
+    glDrawPixels(_buffer_w, _buffer_h, GL_RGBA, GL_UNSIGNED_BYTE, _pixels);
 }
 
 void color_buffer::_init_buffer() {
-    for (int row = 0; row < _buffer_h; row++) {
-        for (int col = 0; col < _buffer_w; col++) {
+    for (int y = 0; y < _buffer_h; y++) {
+        for (int x = 0; x < _buffer_w; x++) {
             _buffer.push_back(new color());
         }
     }
+    _pixels = new uchar[_buffer.size() * 4];
 }

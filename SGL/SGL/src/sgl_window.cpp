@@ -21,7 +21,7 @@ static uint s_fps = 30;
 static uint s_win_width = 100;
 static uint s_win_height = 100;
 
-static void set_pixel_format(HDC hdc) {
+static void _set_pixel_format(HDC hdc) {
     PIXELFORMATDESCRIPTOR pfd;
 
     int color_deep = GetDeviceCaps(hdc, BITSPIXEL);
@@ -39,9 +39,9 @@ static void set_pixel_format(HDC hdc) {
     SetPixelFormat(hdc, pixelFormat, &pfd);
 }
 
-static void init_ogl(HWND hwnd) {
+static void _init_ogl(HWND hwnd) {
     HDC hdc = GetDC(hwnd);
-    set_pixel_format(hdc);
+    _set_pixel_format(hdc);
     HGLRC glrc = wglCreateContext(hdc);
     if (glrc == 0) {
         exit(1);
@@ -56,7 +56,7 @@ static void init_ogl(HWND hwnd) {
     ReleaseDC(hwnd, hdc);
 }
 
-static void get_mouse_xy(LPARAM lParam, int *x, int *y) {
+static void _get_mouse_xy(LPARAM lParam, int *x, int *y) {
     *x = (short)(lParam & 0xffff);
     *y = (short)((lParam >> 16) & 0xffff);
 }
@@ -64,7 +64,7 @@ static void get_mouse_xy(LPARAM lParam, int *x, int *y) {
 LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
     switch (msg) {
     case WM_CREATE:
-        init_ogl(hwnd);
+        _init_ogl(hwnd);
         SetTimer(hwnd, 0, s_fps, NULL);
         break;
     case WM_TIMER:
@@ -86,7 +86,7 @@ LRESULT CALLBACK window_proc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) 
     case WM_LBUTTONDBLCLK:
         if (s_on_mouse) {
             int x, y;
-            get_mouse_xy(lparam, &x, &y);
+            _get_mouse_xy(lparam, &x, &y);
             ENUM_MOUSE_STATE ms = (ENUM_MOUSE_STATE)(msg - WM_LBUTTONDOWN);
             s_on_mouse(ms, x, y);
         }
@@ -181,9 +181,10 @@ void sglut_main_loop() {
     }
 }
 
+extern void main();
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
-    sglut_init_window(960, 640);
-    sglut_main_loop();
+    main();
     return 0;
 }
 

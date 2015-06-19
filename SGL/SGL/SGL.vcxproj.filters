@@ -13,6 +13,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{defec127-e1f0-4729-bce0-19396ca1b3cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\color_buffer.h">
@@ -52,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="src\utils.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="test\triangle.cpp">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

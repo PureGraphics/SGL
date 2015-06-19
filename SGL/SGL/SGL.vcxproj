@@ -85,7 +85,9 @@
     <ClInclude Include="inc\interface_buffer.h" />
     <ClInclude Include="inc\sgl.h" />
     <ClInclude Include="inc\sglut.h" />
+    <ClInclude Include="inc\sgl_enum.h" />
     <ClInclude Include="inc\utils.h" />
+    <ClInclude Include="inc\vertex_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\color_buffer.cpp" />
@@ -93,6 +95,7 @@
     <ClCompile Include="src\sgl.cpp" />
     <ClCompile Include="src\sgl_window.cpp" />
     <ClCompile Include="src\utils.cpp" />
+    <ClCompile Include="src\vertex_buffer.cpp" />
     <ClCompile Include="test\triangle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

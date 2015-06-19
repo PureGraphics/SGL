@@ -43,6 +43,14 @@ color_buffer::~color_buffer() {
     _buffer.clear();
 }
 
+color_buffer * color_buffer::get_intance() {
+    static color_buffer *T = nullptr;
+    if (T == nullptr) {
+        T = new color_buffer();
+    }
+    return T;
+}
+
 void color_buffer::set_viewport(int w, int h) {
     _buffer_w = w;
     _buffer_h = h;

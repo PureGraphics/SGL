@@ -39,6 +39,12 @@
     <ClInclude Include="inc\utils.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="inc\vertex_buffer.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\sgl_enum.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\color_buffer.cpp">
@@ -58,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="test\triangle.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vertex_buffer.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

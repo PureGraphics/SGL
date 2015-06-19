@@ -23,6 +23,8 @@ public:
     color_buffer();
     ~color_buffer();
 public:
+    static color_buffer * get_intance();
+public:
     void set_viewport(int w, int h) override;
     void write_color(int x, int y, color c);
     void write_colors(int x, int y, image_data *img);

@@ -93,6 +93,23 @@ void ra_draw_triangle(uint x0, uint y0, uint x1, uint y1, uint x2, uint y2, colo
             _draw_triangle_flat_top(x0, y0, x1, y1, x2, y2, c);
     }
     else {
-        
+        if ((y0 > y1 && y0 < y2) || (y0 < y1 && y0 > y2)) {
+            float s = abs((float)y0 - y1) / abs((float)y0 - y2);
+            float mid_x = (x1 + x2 * s) / (1 + s);
+            _draw_triangle_flat_bottom(x1, y1, x0, y0, mid_x, y0, c);
+            _draw_triangle_flat_top(x0, y0, mid_x, y0, x2, y2, c);
+        }
+        else if ((y1 > y0 && y1 < y2) || (y1 < y0 && y1 > y2)) {
+            float s = abs((float)y1 - y0) / abs((float)y1 - y2);
+            float mid_x = (x0 + x2 * s) / (1 + s);
+            _draw_triangle_flat_bottom(x0, y0, x1, y1, mid_x, y1, c);
+            _draw_triangle_flat_top(x1, y1, mid_x, y1, x2, y2, c);
+        }
+        else {
+            float s = abs((float)y2 - y0) / abs((float)y2 - y1);
+            float mid_x = (x0 + x1 * s) / (1 + s);
+            _draw_triangle_flat_bottom(x0, y0, x2, y2, mid_x, y2, c);
+            _draw_triangle_flat_top(x2, y2, mid_x, y2, x1, y1, c);
+        }
     }
 }

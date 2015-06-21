@@ -18,6 +18,7 @@ static void _on_draw() {
     ra_draw_line(50, 150, 800, 150, color(255, 255, 0, 255));
 
     ra_draw_triangle(150, 50, 100, 150, 200, 150, color(255, 255, 0, 255));
+    ra_draw_triangle(250, 50, 350, 50, 300, 150, color(255, 255, 0, 255));
 
     sglFlush();
 }

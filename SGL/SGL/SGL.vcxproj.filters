@@ -45,6 +45,9 @@
     <ClInclude Include="inc\sgl_enum.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rasterizer.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\color_buffer.cpp">
@@ -66,6 +69,9 @@
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="src\vertex_buffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rasterizer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

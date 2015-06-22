@@ -41,6 +41,8 @@ color_buffer::~color_buffer() {
         delete (*it);
     }
     _buffer.clear();
+
+    delete[] _pixels;
 }
 
 color_buffer * color_buffer::get_intance() {

@@ -8,9 +8,9 @@
 static void _on_draw() {
     sglColor3f(255, 255, 0);
 
-    sglBegin(SGL_TRIANGLES);
+    //sglBegin(SGL_TRIANGLES);
     //sglBegin(SGL_POINTS);
-    //sglBegin(SGL_QUADS);
+    sglBegin(SGL_QUADS);
     sglVertex2f(100, 200);
     sglVertex2f(100, 300);
     sglVertex2f(200, 300);

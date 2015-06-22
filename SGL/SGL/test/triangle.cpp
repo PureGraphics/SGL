@@ -9,9 +9,12 @@ static void _on_draw() {
     sglColor3f(255, 255, 0);
 
     sglBegin(SGL_TRIANGLES);
-    sglVertex2f(200, 100);
+    //sglBegin(SGL_POINTS);
+    //sglBegin(SGL_QUADS);
     sglVertex2f(100, 200);
-    sglVertex2f(300, 200);
+    sglVertex2f(100, 300);
+    sglVertex2f(200, 300);
+    sglVertex2f(200, 200);
     sglEnd();
 
     ra_draw_line(50, 50, 800, 100, color(255, 255, 0, 255));

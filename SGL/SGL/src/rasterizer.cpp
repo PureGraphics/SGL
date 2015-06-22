@@ -52,7 +52,7 @@ static void _draw_triangle_flat_top(uint x0, uint y0, uint x1, uint y1, uint x2,
         _swap(&x1, &x2);
         _swap(&y1, &y2);
     }
-    else if (y1 == y2) {
+    else if (y1 == y2) {        
         _swap(&x0, &x1);
         _swap(&y0, &y1);
         _swap(&x1, &x2);

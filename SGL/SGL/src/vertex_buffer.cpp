@@ -5,7 +5,7 @@
 #include "rasterizer.h"
 
 vertex_buffer::vertex_buffer() 
-:_primitive_type(SGL_NULL) {
+:_primitive_type(SGL_ENUM_NULL) {
     
 }
 
@@ -33,7 +33,7 @@ void vertex_buffer::draw() {
     color_buffer::get_intance()->clear();
 
     switch (_primitive_type) {
-    case SGL_NULL:
+    case SGL_ENUM_NULL:
         assert(false);
         break;
     case SGL_TRIANGLES:

@@ -48,6 +48,9 @@
     <ClInclude Include="inc\rasterizer.h">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="inc\sgl_math.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\color_buffer.cpp">
@@ -72,6 +75,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\rasterizer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sgl_math.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

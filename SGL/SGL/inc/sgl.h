@@ -10,4 +10,7 @@ void sglVertex3f(float x, float y, float z);
 void sglColor3f(float r, float g, float b);
 void sglFlush();
 
+void sglMatrixMode(SGL_MATRIX_MODE mode);
+void sglScalef(float x, float y, float z);
+
 #endif

@@ -67,3 +67,11 @@ void sglFlush() {
     }
     _distroy_vbs();
 }
+
+void sglMatrixMode(SGL_MATRIX_MODE mode) {
+    
+}
+
+void sglScalef(float x, float y, float z) {
+    
+}

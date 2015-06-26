@@ -101,7 +101,7 @@ void sglScalef(float x, float y, float z) {
         s_mat_model_view = s_mat_model_view * s;
         break;
     case SGL_PROJECTION:
-        s_mat_model_view = s_mat_model_view * s;
+        s_mat_projection = s_mat_projection * s;
         break;
     default:
         break;
@@ -125,7 +125,7 @@ void sglRotatef(float angle, float x, float y, float z) {
         s_mat_model_view = s_mat_model_view * r;
         break;
     case SGL_PROJECTION:
-        s_mat_model_view = s_mat_model_view * r;
+        s_mat_projection = s_mat_projection * r;
         break;
     default:
         break;
@@ -139,7 +139,7 @@ void sglTranslatef(float x, float y, float z) {
         s_mat_model_view = s_mat_model_view * t;
         break;
     case SGL_PROJECTION:
-        s_mat_model_view = s_mat_model_view * t;
+        s_mat_projection = s_mat_projection * t;
         break;
     default:
         break;

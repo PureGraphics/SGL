@@ -42,7 +42,7 @@ public:
     vec4(const vec3 &v);
 public:
     vec4 operator+(const vec4 &v) const;
-    //vec4 operator*(float s) const;
+    vec4 operator*(float s) const;
 public:
     float x, y, z, w;
 };
@@ -59,6 +59,7 @@ public:
     static matrix4x4 get_rotate_z_matrix(float angle);
     static matrix4x4 get_translation_matrix(float tx, float ty, float tz);
 public:
+    void identify();
     void fill_matrix(const float *mat_array);
 public:
     float m[4][4];
@@ -71,6 +72,20 @@ static vec4 operator*(const vec4 &v, const matrix4x4 &m) {
     tv.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + v.w * m.m[3][2];
     tv.w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + v.w * m.m[3][3];
     return tv;
+}
+
+static matrix4x4 operator*(const matrix4x4 &ma, const matrix4x4 &mb) {
+    matrix4x4 m;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            float vij = 0;
+            for (int k = 0; k < 4; k++) {
+                vij += (ma.m[i][k] * mb.m[k][j]);
+            }
+            m.m[i][j] = vij;
+        }
+    }
+    return m;
 }
 
 #define M_PI 3.14159265358979323846

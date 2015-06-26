@@ -29,8 +29,18 @@ SGL_PRIMITIVE_TYPE vertex_buffer::get_primitive_type() const {
     return _primitive_type;
 }
 
-void vertex_buffer::draw() {
+void vertex_buffer::draw(const matrix4x4 *mat_mvp) {
     color_buffer::get_intance()->clear();
+
+    for (int i = 0; i < _verts.size(); i++) {
+        vertex *v = &_verts[i];
+        vec4 vec(v->x, v->y, v->z, v->w);
+        vec = vec * (*mat_mvp);
+        v->x = vec.x;
+        v->y = vec.y;
+        v->z = vec.z;
+        v->w = vec.w;
+    }
 
     switch (_primitive_type) {
     case SGL_ENUM_NULL:

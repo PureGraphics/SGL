@@ -11,6 +11,9 @@ void sglColor3f(float r, float g, float b);
 void sglFlush();
 
 void sglMatrixMode(SGL_MATRIX_MODE mode);
+void sglLoadIdentity();
 void sglScalef(float x, float y, float z);
+void sglRotatef(float angle, float x, float y, float z);
+void sglTranslatef(float x, float y, float z);
 
 #endif

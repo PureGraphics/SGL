@@ -103,17 +103,12 @@ vec4 vec4::operator+(const vec4 &v) const{
     return vec4(x + v.x, y + v.y, z + v.z, w + v.w);
 }
 
-//vec4 vec4::operator*(float s) const{
-//    return vec4(x * s, y * s, z * s, w * s);
-//}
+vec4 vec4::operator*(float s) const{
+    return vec4(x * s, y * s, z * s, w * s);
+}
 
 matrix4x4::matrix4x4() {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            m[i][j] = 0;
-        }
-    }
-    m[0][0] = m[1][1] = m[2][2] = m[3][3] = 1;
+    identify();
 }
 
 matrix4x4::matrix4x4(const float *mat_array) {
@@ -175,6 +170,15 @@ matrix4x4 matrix4x4::get_translation_matrix(float tx, float ty, float tz) {
         tx, ty, tz, 1
     };
     return matrix4x4(mat);
+}
+
+void matrix4x4::identify() {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            m[i][j] = 0;
+        }
+    }
+    m[0][0] = m[1][1] = m[2][2] = m[3][3] = 1;
 }
 
 void matrix4x4::fill_matrix(const float *mat_array) {

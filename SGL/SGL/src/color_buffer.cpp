@@ -62,6 +62,8 @@ void color_buffer::set_viewport(int w, int h) {
 
 void color_buffer::write_color(int x, int y, color c) {
     CHECK();
+    if (x < 0 || x >= _buffer_w || y < 0 || y >= _buffer_h)
+        return;
     color *pc = _buffer[(_buffer_h - y - 40) * _buffer_w + x];
     pc->copy(c);
 }

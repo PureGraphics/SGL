@@ -49,6 +49,7 @@ float vec3::operator[](uint index) const {
         return y;
     else if (index == 2)
         return z;
+    return 0;
 }
 
 vec3 vec3::operator+(const vec3 &v) const {
@@ -102,6 +103,84 @@ vec4 vec4::operator+(const vec4 &v) const{
     return vec4(x + v.x, y + v.y, z + v.z, w + v.w);
 }
 
-vec4 vec4::operator*(float s) const{
-    return vec4(x * s, y * s, z * s, w * s);
+//vec4 vec4::operator*(float s) const{
+//    return vec4(x * s, y * s, z * s, w * s);
+//}
+
+matrix4x4::matrix4x4() {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            m[i][j] = 0;
+        }
+    }
+    m[0][0] = m[1][1] = m[2][2] = m[3][3] = 1;
+}
+
+matrix4x4::matrix4x4(const float *mat_array) {
+    fill_matrix(mat_array);
+}
+
+matrix4x4::~matrix4x4() {
+    
+}
+
+matrix4x4 matrix4x4::get_scale_matrix(float sx, float sy, float sz) {
+    float mat[] = {
+        sx, 0, 0, 0,
+        0, sy, 0, 0,
+        0, 0, sz, 0,
+        0, 0, 0,  1
+    };
+    return matrix4x4(mat);
+}
+
+matrix4x4 matrix4x4::get_rotate_x_matrix(float angle) {
+    float a = deg_2_rad(angle);
+    float mat[] = {
+        1, 0, 0, 0,
+        0, cos(a), sin(a), 0,
+        0, -sin(a), cos(a), 0,
+        0, 0, 0, 1
+    };
+    return matrix4x4(mat);
+}
+
+matrix4x4 matrix4x4::get_rotate_y_matrix(float angle) {
+    float a = deg_2_rad(angle);
+    float mat[] = {
+        cos(a), 0, -sin(a), 0,
+        0, 1, 0, 0,
+        sin(a), 0, cos(a), 0,
+        0, 0, 0, 1
+    };
+    return matrix4x4(mat);
+}
+
+matrix4x4 matrix4x4::get_rotate_z_matrix(float angle) {
+    float a = deg_2_rad(angle);
+    float mat[] = {
+        cos(a), sin(a), 0, 0,
+        -sin(a), cos(a), 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    };
+    return matrix4x4(mat);
+}
+
+matrix4x4 matrix4x4::get_translation_matrix(float tx, float ty, float tz) {
+    float mat[] = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        tx, ty, tz, 1
+    };
+    return matrix4x4(mat);
+}
+
+void matrix4x4::fill_matrix(const float *mat_array) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            m[i][j] = mat_array[i * 4 + j];
+        }
+    }
 }

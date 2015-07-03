@@ -174,7 +174,7 @@ matrix4x4 matrix4x4::get_translation_matrix(float tx, float ty, float tz) {
 
 matrix4x4 matrix4x4::get_view_matrix(const vec3 &eye, const vec3 &target, const vec3 &up) {
     vec3 n = target - eye;
-    vec3 u = n.cross(up);
+    vec3 u = up.cross(n);
     vec3 v = n.cross(u);
     float mat[] = {
         u.x, v.x, n.x, 0,

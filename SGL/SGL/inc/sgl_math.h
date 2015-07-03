@@ -58,6 +58,8 @@ public:
     static matrix4x4 get_rotate_y_matrix(float angle);
     static matrix4x4 get_rotate_z_matrix(float angle);
     static matrix4x4 get_translation_matrix(float tx, float ty, float tz);
+    static matrix4x4 get_view_matrix(const vec3 &eye, const vec3 &target, const vec3 &up);
+    static matrix4x4 get_perspective_matrix(float fovy, float aspect, float n, float f);
 public:
     void identify();
     void fill_matrix(const float *mat_array);

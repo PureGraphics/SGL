@@ -172,6 +172,30 @@ matrix4x4 matrix4x4::get_translation_matrix(float tx, float ty, float tz) {
     return matrix4x4(mat);
 }
 
+matrix4x4 matrix4x4::get_view_matrix(const vec3 &eye, const vec3 &target, const vec3 &up) {
+    vec3 n = target - eye;
+    vec3 u = n.cross(up);
+    vec3 v = n.cross(u);
+    float mat[] = {
+        u.x, v.x, n.x, 0,
+        u.y, v.y, n.y, 0,
+        u.z, v.z, n.z, 0,
+        -eye.x, -eye.y, -eye.z, 1
+    };
+    return matrix4x4(mat);
+}
+
+matrix4x4 matrix4x4::get_perspective_matrix(float fovy, float aspect, float n, float f) {
+    float a = deg_2_rad(fovy);
+    float mat[] = {
+        1 / (aspect*tan(a/2)), 0, 0, 0,
+        0, 1 / tan(a/2), 0, 0,
+        0, 0, f / (f-n), 1,
+        0, 0, -n*f / (f-n), 0
+    };
+    return matrix4x4(mat);
+}
+
 void matrix4x4::identify() {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {

@@ -145,3 +145,15 @@ void sglTranslatef(float x, float y, float z) {
         break;
     }
 }
+
+void sgluLookAt(vec3 eye, vec3 target, vec3 up) {
+    assert(s_current_matrix_mode == SGL_MODELVIEW);
+    matrix4x4 v = matrix4x4::get_view_matrix(eye, target, up);
+    s_mat_model_view = s_mat_model_view * v;
+}
+
+void sgluPerspective(float fovy, float aspect, float n, float f) {
+    assert(s_current_matrix_mode == SGL_PROJECTION);
+    matrix4x4 p = matrix4x4::get_perspective_matrix(fovy, aspect, n, f);
+    s_mat_projection = s_mat_projection * p;
+}

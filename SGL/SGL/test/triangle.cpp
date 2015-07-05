@@ -7,6 +7,7 @@
 #define WH 640
 
 static void _init() {
+    sglShadeModel(SGL_SMOOTH);
     sglMatrixMode(SGL_PROJECTION);
     sgluPerspective(60, (float)WW / WH, 0.1f, 1000.0f);
 
@@ -21,7 +22,6 @@ static float s_scale = 1.0f;
 
 static void _on_draw() {
     sglClear();
-    sglColor3f(255, 255, 0);
 
     sglMatrixMode(SGL_MODELVIEW);
     sglLoadIdentity();
@@ -37,8 +37,11 @@ static void _on_draw() {
     sgluLookAt(vec3(0, 0, -2), vec3(0, 0, 1), vec3(0, 1, 0));
 
     sglBegin(SGL_TRIANGLES);
+    sglColor3f(255, 0, 0);
     sglVertex3f(0, 1, 1);
+    sglColor3f(0, 255, 0);
     sglVertex3f(-1, 0, 1);
+    sglColor3f(0, 0, 255);
     sglVertex3f(1, 0, 1);
     sglEnd();
 

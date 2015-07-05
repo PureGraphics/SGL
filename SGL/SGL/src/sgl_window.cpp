@@ -9,6 +9,7 @@
 #include "sglut.h"
 #include "utils.h"
 #include "color_buffer.h"
+#include "sgl_context.h"
 
 #define WINDOW_CLASS_NAME "WIN_LAUNCHER"
 
@@ -55,6 +56,7 @@ static void _init_ogl(HWND hwnd) {
     glViewport(0, 0, s_win_width, s_win_height);
 
     color_buffer::get_intance()->set_viewport(s_win_width, s_win_height);
+    sgl_init_context();
 
     ReleaseDC(hwnd, hdc);
 }

@@ -16,6 +16,7 @@ static SGL_MATRIX_MODE s_current_matrix_mode;
 static matrix4x4 s_mat_model_view;
 static matrix4x4 s_mat_projection;
 static sgl_viewport s_viewport;
+static SGL_SHADE_MODEL s_current_shade_model;
 
 static vertex_buffer * _get_current_vertex_buffer() {
     assert(s_vbs.size() > 0);
@@ -28,6 +29,11 @@ static void _distroy_vbs() {
         delete vb;
     }
     s_vbs.clear();
+}
+
+void sgl_init_context() {
+    s_current_matrix_mode = SGL_MODELVIEW;
+    s_current_shade_model = SGL_FLAT;
 }
 
 void sglClear() {
@@ -75,7 +81,7 @@ void sglFlush() {
     matrix4x4 mat_mvp = s_mat_model_view * s_mat_projection;
     for (int i = 0; i < s_vbs.size(); i++) {
         vertex_buffer *vb = s_vbs[i];
-        vb->draw(&mat_mvp, &s_viewport);
+        vb->draw(&mat_mvp, &s_viewport, s_current_shade_model);
     }
     _distroy_vbs();
 }
@@ -167,4 +173,8 @@ void sglViewport(uint x, uint y, uint w, uint h) {
     s_viewport.y = y;
     s_viewport.w = w;
     s_viewport.h = h;
+}
+
+void sglShadeModel(SGL_SHADE_MODEL mode) {
+    s_current_shade_model = mode;
 }

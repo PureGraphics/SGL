@@ -21,4 +21,6 @@ void sgluLookAt(vec3 eye, vec3 target, vec3 up);
 void sgluPerspective(float fovy, float aspect, float n, float f);
 void sglViewport(uint x, uint y, uint w, uint h);
 
+void sglShadeModel(SGL_SHADE_MODEL mode);
+
 #endif

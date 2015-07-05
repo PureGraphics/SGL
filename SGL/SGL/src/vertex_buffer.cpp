@@ -18,6 +18,23 @@ vertex::~vertex() {
     
 }
 
+static inline void _swap_f(float *a, float *b) {
+    float temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void vertex::swap(vertex &va, vertex &vb) {
+    _swap_f(&va.x, &vb.x);
+    _swap_f(&va.y, &vb.y);
+    _swap_f(&va.z, &vb.z);
+    _swap_f(&va.w, &vb.w);
+    _swap_f(&va.r, &vb.r);
+    _swap_f(&va.g, &vb.g);
+    _swap_f(&va.b, &vb.b);
+    _swap_f(&va.a, &vb.a);
+}
+
 void vertex::set_color(const color &c) {
     r = c.r;
     g = c.g;
@@ -40,7 +57,7 @@ void vertex::_init() {
 }
 
 vertex_buffer::vertex_buffer() 
-:_primitive_type(SGL_ENUM_NULL) {
+:_primitive_type(SGL_PRIMITIVE_TYPE_NULL) {
     
 }
 
@@ -64,7 +81,7 @@ SGL_PRIMITIVE_TYPE vertex_buffer::get_primitive_type() const {
     return _primitive_type;
 }
 
-void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport) {
+void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport, SGL_SHADE_MODEL shade_mode) {
     for (int i = 0; i < _verts.size(); i++) {
         vertex *v = &_verts[i];
         vec4 vec(v->x, v->y, v->z, v->w);
@@ -79,7 +96,7 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport)
     }
 
     switch (_primitive_type) {
-    case SGL_ENUM_NULL:
+    case SGL_PRIMITIVE_TYPE_NULL:
         assert(false);
         break;
     case SGL_TRIANGLES:
@@ -88,7 +105,7 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport)
             vertex *v1 = &_verts[i + 1];
             vertex *v2 = &_verts[i + 2];
             
-            ra_draw_triangle(*v0, *v1, *v2);
+            ra_draw_triangle(*v0, *v1, *v2, shade_mode);
         }
         break;
     case SGL_POINTS:
@@ -104,8 +121,8 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport)
             vertex *v2 = &_verts[i + 2];
             vertex *v3 = &_verts[i + 3];
 
-            ra_draw_triangle(*v0, *v1, *v2);
-            ra_draw_triangle(*v0, *v2, *v3);
+            ra_draw_triangle(*v0, *v1, *v2, shade_mode);
+            ra_draw_triangle(*v0, *v2, *v3, shade_mode);
         }
         break;
     case SGL_POLYGON:

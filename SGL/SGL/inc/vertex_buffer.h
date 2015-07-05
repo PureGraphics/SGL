@@ -14,6 +14,8 @@ public:
     vertex(float x, float y);
     ~vertex();
 public:
+    static void swap(vertex &va, vertex &vb);
+public:
     void set_color(const color &c);
     const color & get_color() const;
 public:
@@ -34,7 +36,7 @@ public:
     void add_vertex(vertex v);
     void clear();
     SGL_PRIMITIVE_TYPE get_primitive_type() const;
-    void draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport);
+    void draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport, SGL_SHADE_MODEL shade_mode);
 private:
     std::vector<vertex> _verts;
     SGL_PRIMITIVE_TYPE _primitive_type;

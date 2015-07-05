@@ -25,9 +25,10 @@ static void _on_draw() {
 
     sglMatrixMode(SGL_MODELVIEW);
     sglLoadIdentity();
-    /*sglRotatef(s_rot_angle, 0, 0, 1);
+    sglRotatef(s_rot_angle, 0, 0, 1);
     if (++s_rot_angle > 360)
-    s_rot_angle = 0;
+        s_rot_angle = 0;
+    /*
     sglScalef(s_scale, s_scale, s_scale);
     s_scale += 0.16f;
     if (s_scale >= 2)

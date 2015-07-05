@@ -6,8 +6,8 @@
 #include "vertex_buffer.h"
 
 void ra_draw_line(int x0, int y0, int x1, int y1, const color &c);
-void ra_draw_triangle(const vertex &v0,
-                      const vertex &v1,
-                      const vertex &v2);
+void ra_draw_triangle(vertex &v0,
+                      vertex &v1,
+                      vertex &v2);
 
 #endif

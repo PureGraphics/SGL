@@ -4,6 +4,41 @@
 
 #include "rasterizer.h"
 
+vertex::vertex() {
+    _init();
+}
+
+vertex::vertex(float x, float y) {
+    _init();
+    this->x = x;
+    this->y = y;
+}
+
+vertex::~vertex() {
+    
+}
+
+void vertex::set_color(const color &c) {
+    r = c.r;
+    g = c.g;
+    b = c.b;
+    a = c.a;
+}
+
+const color & vertex::get_color() const {
+    _c.r = r;
+    _c.g = g;
+    _c.b = b;
+    _c.a = a;
+    return _c;
+}
+
+void vertex::_init() {
+    x = y = z = 0;
+    w = 1;
+    r = g = b = a = 0;
+}
+
 vertex_buffer::vertex_buffer() 
 :_primitive_type(SGL_ENUM_NULL) {
     
@@ -53,7 +88,7 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport)
             vertex *v1 = &_verts[i + 1];
             vertex *v2 = &_verts[i + 2];
             
-            ra_draw_triangle(v0->x, v0->y, v1->x, v1->y, v2->x, v2->y, color(v0->r, v0->g, v0->b, v0->a));
+            ra_draw_triangle(*v0, *v1, *v2);
         }
         break;
     case SGL_POINTS:
@@ -69,8 +104,8 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport)
             vertex *v2 = &_verts[i + 2];
             vertex *v3 = &_verts[i + 3];
 
-            ra_draw_triangle(v0->x, v0->y, v1->x, v1->y, v2->x, v2->y, color(v0->r, v0->g, v0->b, v0->a));
-            ra_draw_triangle(v0->x, v0->y, v2->x, v2->y, v3->x, v3->y, color(v0->r, v0->g, v0->b, v0->a));
+            ra_draw_triangle(*v0, *v1, *v2);
+            ra_draw_triangle(*v0, *v2, *v3);
         }
         break;
     case SGL_POLYGON:

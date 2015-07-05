@@ -8,7 +8,11 @@ static inline void _swap(int *a, int *b) {
     *b = temp;
 }
 
-void ra_draw_line(int x0, int y0, int x1, int y1, color c) {
+static inline float _lerp(float lv, float rv, float l) {
+    return lv * (1 - l) + rv * l;
+}
+
+void ra_draw_line(int x0, int y0, int x1, int y1, const color &c) {
     if (x0 > x1) {
         _swap(&x0, &x1);
         _swap(&y0, &y1);
@@ -21,7 +25,14 @@ void ra_draw_line(int x0, int y0, int x1, int y1, color c) {
     }
 }
 
-static void _draw_triangle_flat_bottom(int x0, int y0, int x1, int y1, int x2, int y2, color c) {
+static void _draw_triangle_flat_bottom(const vertex &v0, const vertex &v1, const vertex &v2) {
+    int x0 = v0.x;
+    int y0 = v0.y;
+    int x1 = v1.x;
+    int y1 = v1.y;
+    int x2 = v2.x;
+    int y2 = v2.y;
+
     if (y0 == y1) {
         _swap(&x0, &x2);
         _swap(&y0, &y2);
@@ -41,13 +52,53 @@ static void _draw_triangle_flat_bottom(int x0, int y0, int x1, int y1, int x2, i
     float xe = x0;
     int y_end = (y1 > y2) ? y1 : y2;
     for (int y = y0; y < y_end; y++) {
-        ra_draw_line(round(xs), y, round(xe), y, c);
+        ra_draw_line(round(xs), y, round(xe), y, v0.get_color());
         xs += dx_left;
         xe += dx_right;
     }
 }
 
-static void _draw_triangle_flat_top(int x0, int y0, int x1, int y1, int x2, int y2, color c) {
+static void _draw_triangle_flat_bottom_lerp_for_test(const vertex &v0, const vertex &v1, const vertex &v2) {
+    int x0 = v0.x;
+    int y0 = v0.y;
+    int x1 = v1.x;
+    int y1 = v1.y;
+    int x2 = v2.x;
+    int y2 = v2.y;
+
+    if (y0 == y1) {
+        _swap(&x0, &x2);
+        _swap(&y0, &y2);
+    }
+    else if (y0 == y2) {
+        _swap(&x0, &x1);
+        _swap(&y0, &y1);
+    }
+    if (x1 > x2) {
+        _swap(&x1, &x2);
+        _swap(&y1, &y2);
+    }
+
+    float xs = x0;
+    float xe = x0;
+    int y_end = (y1 > y2) ? y1 : y2;
+    float y_h = y_end - y0;
+    for (int y = y0; y < y_end; y++) {
+        ra_draw_line(round(xs), y, round(xe), y, v0.get_color());
+        float l = (float)(y - y0) / y_h;
+        xs = _lerp(x0, x1, l);
+        xe = _lerp(x0, x2, l);
+    }
+}
+
+static void _draw_triangle_flat_top(const vertex &v0, const vertex &v1, const vertex &v2) {
+    int x0 = v0.x;
+    int y0 = v0.y;
+    int x1 = v1.x;
+    int y1 = v1.y;
+    int x2 = v2.x;
+    int y2 = v2.y;
+
     if (y0 == y2) {
         _swap(&x1, &x2);
         _swap(&y1, &y2);
@@ -67,49 +118,57 @@ static void _draw_triangle_flat_top(int x0, int y0, int x1, int y1, int x2, int 
     float xs = x0;
     float xe = x1;
     for (int y = y0; y < y2; y++) {
-        ra_draw_line(round(xs), y, round(xe), y, c);
+        ra_draw_line(round(xs), y, round(xe), y, v0.get_color());
         xs += dx_left;
         xe += dx_right;
     }
 }
 
-void ra_draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, color c) {
+void ra_draw_triangle(const vertex &v0, const vertex &v1, const vertex &v2) {
+    int x0 = v0.x;
+    int y0 = v0.y;
+    int x1 = v1.x;
+    int y1 = v1.y;
+    int x2 = v2.x;
+    int y2 = v2.y;
+
     if (y0 == y1) {
         if (y2 < y0)
-            _draw_triangle_flat_bottom(x0, y0, x1, y1, x2, y2, c);
+            _draw_triangle_flat_bottom(v0, v1, v2);
         else
-            _draw_triangle_flat_top(x0, y0, x1, y1, x2, y2, c);
+            _draw_triangle_flat_top(v0, v1, v2);
     }
     else if (y0 == y2) {
         if (y1 < y0)
-            _draw_triangle_flat_bottom(x0, y0, x1, y1, x2, y2, c);
+            _draw_triangle_flat_bottom(v0, v1, v2);
         else
-            _draw_triangle_flat_top(x0, y0, x1, y1, x2, y2, c);
+            _draw_triangle_flat_top(v0, v1, v2);
     }
     else if (y1 == y2) {
         if (y0 < y1)
-            _draw_triangle_flat_bottom(x0, y0, x1, y1, x2, y2, c);
+            //_draw_triangle_flat_bottom(x0, y0, x1, y1, x2, y2);
+            _draw_triangle_flat_bottom_lerp_for_test(v0, v1, v2);
         else
-            _draw_triangle_flat_top(x0, y0, x1, y1, x2, y2, c);
+            _draw_triangle_flat_top(v0, v1, v2);
     }
     else {
         if ((y0 > y1 && y0 < y2) || (y0 < y1 && y0 > y2)) {
             float s = abs((float)y0 - y1) / abs((float)y0 - y2);
             float mid_x = (x1 + x2 * s) / (1 + s);
-            ra_draw_triangle(x1, y1, x0, y0, mid_x, y0, c);
-            ra_draw_triangle(x0, y0, mid_x, y0, x2, y2, c);
+            ra_draw_triangle(vertex(x1, y1), vertex(x0, y0), vertex(mid_x, y0));
+            ra_draw_triangle(vertex(x0, y0), vertex(mid_x, y0), vertex(x2, y2));
         }
         else if ((y1 > y0 && y1 < y2) || (y1 < y0 && y1 > y2)) {
             float s = abs((float)y1 - y0) / abs((float)y1 - y2);
             float mid_x = (x0 + x2 * s) / (1 + s);
-            ra_draw_triangle(x0, y0, x1, y1, mid_x, y1, c);
-            ra_draw_triangle(x1, y1, mid_x, y1, x2, y2, c);
+            ra_draw_triangle(vertex(x0, y0), vertex(x1, y1), vertex(mid_x, y1));
+            ra_draw_triangle(vertex(x1, y1), vertex(mid_x, y1), vertex(x2, y2));
         }
         else {
             float s = abs((float)y2 - y0) / abs((float)y2 - y1);
             float mid_x = (x0 + x1 * s) / (1 + s);
-            ra_draw_triangle(x0, y0, x2, y2, mid_x, y2, c);
-            ra_draw_triangle(x2, y2, mid_x, y2, x1, y1, c);
+            ra_draw_triangle(vertex(x0, y0), vertex(x2, y2), vertex(mid_x, y2));
+            ra_draw_triangle(vertex(x2, y2), vertex(mid_x, y2), vertex(x1, y1));
         }
     }
 }

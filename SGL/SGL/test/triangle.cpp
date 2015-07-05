@@ -25,13 +25,13 @@ static void _on_draw() {
 
     sglMatrixMode(SGL_MODELVIEW);
     sglLoadIdentity();
-    sglRotatef(s_rot_angle, 0, 0, 1);
+    /*sglRotatef(s_rot_angle, 0, 0, 1);
     if (++s_rot_angle > 360)
-        s_rot_angle = 0;
+    s_rot_angle = 0;
     sglScalef(s_scale, s_scale, s_scale);
     s_scale += 0.16f;
     if (s_scale >= 2)
-        s_scale = 1.0f;
+    s_scale = 1.0f;*/
     //sglTranslatef(100, -200, 0);
     sgluLookAt(vec3(0, 0, -2), vec3(0, 0, 1), vec3(0, 1, 0));
 

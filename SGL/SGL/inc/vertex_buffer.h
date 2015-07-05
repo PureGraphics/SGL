@@ -10,22 +10,19 @@
 
 typedef struct vertex {
 public:
-    vertex() 
-    :x(0),y(0),z(0),w(1),
-     r(0),g(0),b(0),a(255) {
-        
-    }
-    ~vertex() {}
+    vertex();
+    vertex(float x, float y);
+    ~vertex();
 public:
-    void set_color(const color &c) {
-        r = c.r;
-        g = c.g;
-        b = c.b;
-        a = c.a;
-    }
-
+    void set_color(const color &c);
+    const color & get_color() const;
+public:
     float x, y, z, w;
     float r, g, b, a;
+private:
+    void _init();
+private:
+    mutable color _c;
 } vertex;
 
 class vertex_buffer {

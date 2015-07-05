@@ -83,6 +83,7 @@
     <ClInclude Include="inc\common_header.h" />
     <ClInclude Include="inc\image.h" />
     <ClInclude Include="inc\interface_buffer.h" />
+    <ClInclude Include="inc\sgl_context.h" />
     <ClInclude Include="inc\sgl_math.h" />
     <ClInclude Include="inc\rasterizer.h" />
     <ClInclude Include="inc\sgl.h" />

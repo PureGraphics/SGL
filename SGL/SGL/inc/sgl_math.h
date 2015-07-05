@@ -31,6 +31,7 @@ public:
     vec3 cross(const vec3 &v) const;
     float length() const;
     void normalize();
+    vec3 normalized() const;
 public:
     float x, y, z;
 };

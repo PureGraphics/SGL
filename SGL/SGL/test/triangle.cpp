@@ -12,18 +12,31 @@ static void _init() {
 
     sglMatrixMode(SGL_MODELVIEW);
     sglLoadIdentity();
+
+    sglViewport(0, 0, WW, WH);
 }
 
+static float s_rot_angle = 0;
+static float s_scale = 1.0f;
+
 static void _on_draw() {
+    sglClear();
     sglColor3f(255, 255, 0);
 
-    //sglRotatef(20, 0, 0, 1);
-    //sglScalef(2, 2, 2);
+    sglMatrixMode(SGL_MODELVIEW);
+    sglLoadIdentity();
+    sglRotatef(s_rot_angle, 0, 0, 1);
+    if (++s_rot_angle > 360)
+        s_rot_angle = 0;
+    sglScalef(s_scale, s_scale, s_scale);
+    s_scale += 0.16f;
+    if (s_scale >= 2)
+        s_scale = 1.0f;
     //sglTranslatef(100, -200, 0);
-    sgluLookAt(vec3(0, 0, 0), vec3(0, 0, 1), vec3(0, 1, 0));
+    sgluLookAt(vec3(0, 0, -2), vec3(0, 0, 1), vec3(0, 1, 0));
 
     sglBegin(SGL_TRIANGLES);
-    sglVertex3f(0, 1, 1.23f);
+    sglVertex3f(0, 1, 1);
     sglVertex3f(-1, 0, 1);
     sglVertex3f(1, 0, 1);
     sglEnd();

@@ -4,6 +4,7 @@
 #include "sgl_enum.h"
 #include "sgl_math.h"
 
+void sglClear();
 void sglBegin(SGL_PRIMITIVE_TYPE type);
 void sglEnd();
 void sglVertex2f(float x, float y);
@@ -18,5 +19,6 @@ void sglRotatef(float angle, float x, float y, float z);
 void sglTranslatef(float x, float y, float z);
 void sgluLookAt(vec3 eye, vec3 target, vec3 up);
 void sgluPerspective(float fovy, float aspect, float n, float f);
+void sglViewport(uint x, uint y, uint w, uint h);
 
 #endif

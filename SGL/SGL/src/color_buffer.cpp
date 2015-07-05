@@ -73,6 +73,13 @@ void color_buffer::write_colors(int x, int y, image_data *img) {
 }
 
 void color_buffer::clear() {
+    color c(0, 0, 0, 0);
+    for (int y = 0; y < _buffer_h; y++) {
+        for (int x = 0; x < _buffer_w; x++) {
+            color *pc = _buffer[y * _buffer_w + x];
+            pc->copy(c);
+        }
+    }
     memset(_pixels, 0, _buffer.size() * 4);
 }
 

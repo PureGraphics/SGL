@@ -4,9 +4,9 @@
 #include "common_header.h"
 #include "color_buffer.h"
 
-void ra_draw_line(uint x0, uint y0, uint x1, uint y1, color c);
-void ra_draw_triangle(uint x0, uint y0,
-                      uint x1, uint y1,
-                      uint x2, uint y2, color c);
+void ra_draw_line(int x0, int y0, int x1, int y1, color c);
+void ra_draw_triangle(int x0, int y0,
+                      int x1, int y1,
+                      int x2, int y2, color c);
 
 #endif

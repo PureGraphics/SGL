@@ -6,6 +6,7 @@
 #include "sgl_enum.h"
 #include "color_buffer.h"
 #include "sgl_math.h"
+#include "sgl_context.h"
 
 typedef struct vertex {
 public:
@@ -36,7 +37,7 @@ public:
     void add_vertex(vertex v);
     void clear();
     SGL_PRIMITIVE_TYPE get_primitive_type() const;
-    void draw(const matrix4x4 *mat_mvp);
+    void draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport);
 private:
     std::vector<vertex> _verts;
     SGL_PRIMITIVE_TYPE _primitive_type;

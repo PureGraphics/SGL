@@ -83,6 +83,11 @@ void vec3::normalize() {
     z *= s;
 }
 
+vec3 vec3::normalized() const {
+    float s = 1.0f / length();
+    return vec3(x*s, y*s, z*s);
+}
+
 vec4::vec4() {
     
 }
@@ -173,9 +178,9 @@ matrix4x4 matrix4x4::get_translation_matrix(float tx, float ty, float tz) {
 }
 
 matrix4x4 matrix4x4::get_view_matrix(const vec3 &eye, const vec3 &target, const vec3 &up) {
-    vec3 n = target - eye;
-    vec3 u = up.cross(n);
-    vec3 v = n.cross(u);
+    vec3 n = (target - eye).normalized();
+    vec3 u = up.cross(n).normalized();
+    vec3 v = n.cross(u).normalized();
     float mat[] = {
         u.x, v.x, n.x, 0,
         u.y, v.y, n.y, 0,

@@ -227,13 +227,25 @@ static void _draw_triangle_flat_top(vertex &v0, vertex &v1, vertex &v2, SGL_SHAD
     }
 }
 
+static void _get_split_vertex(vertex &v_ret, const vertex &va, const vertex &vb, float y) {
+    float ly = (y - va.y) / (vb.y - va.y);
+    v_ret.x = _lerp(va.x, vb.x, ly);
+    v_ret.y = y;
+    v_ret.z = _lerp(va.z, vb.z, ly);
+    v_ret.w = 1;
+    v_ret.r = _lerp(va.r, vb.r, ly);
+    v_ret.g = _lerp(va.g, vb.g, ly);
+    v_ret.b = _lerp(va.b, vb.b, ly);
+    v_ret.a = _lerp(va.a, vb.a, ly);
+}
+
 void ra_draw_triangle(vertex &v0, vertex &v1, vertex &v2, SGL_SHADE_MODEL shade_mode) {
-    int x0 = v0.x;
-    int y0 = v0.y;
-    int x1 = v1.x;
-    int y1 = v1.y;
-    int x2 = v2.x;
-    int y2 = v2.y;
+    float x0 = v0.x;
+    float y0 = v0.y;
+    float x1 = v1.x;
+    float y1 = v1.y;
+    float x2 = v2.x;
+    float y2 = v2.y;
 
     if (y0 == y1) {
         if (y2 < y0)
@@ -255,22 +267,31 @@ void ra_draw_triangle(vertex &v0, vertex &v1, vertex &v2, SGL_SHADE_MODEL shade_
     }
     else {
         if ((y0 > y1 && y0 < y2) || (y0 < y1 && y0 > y2)) {
-            float s = abs((float)y0 - y1) / abs((float)y0 - y2);
-            float mid_x = (x1 + x2 * s) / (1 + s);
-            ra_draw_triangle(v1, v0, vertex(mid_x, y0), shade_mode);
-            ra_draw_triangle(v0, vertex(mid_x, y0), v2, shade_mode);
+            vertex v_mid;
+            _get_split_vertex(v_mid, v1, v2, v0.y);
+            vertex v0_c = v0.clone();
+            vertex v_mid_c = v_mid.clone();
+            vertex v2_c = v2.clone();
+            ra_draw_triangle(v1, v0, v_mid, shade_mode);
+            ra_draw_triangle(v0_c, v_mid_c, v2_c, shade_mode);
         }
         else if ((y1 > y0 && y1 < y2) || (y1 < y0 && y1 > y2)) {
-            float s = abs((float)y1 - y0) / abs((float)y1 - y2);
-            float mid_x = (x0 + x2 * s) / (1 + s);
-            ra_draw_triangle(v0, v1, vertex(mid_x, y1), shade_mode);
-            ra_draw_triangle(v1, vertex(mid_x, y1), v2, shade_mode);
+            vertex v_mid;
+            _get_split_vertex(v_mid, v0, v2, v1.y);
+            vertex v1_c = v1.clone();
+            vertex v_mid_c = v_mid.clone();
+            vertex v2_c = v2.clone();
+            ra_draw_triangle(v0, v1, v_mid, shade_mode);
+            ra_draw_triangle(v1_c, v_mid_c, v2_c, shade_mode);
         }
         else {
-            float s = abs((float)y2 - y0) / abs((float)y2 - y1);
-            float mid_x = (x0 + x1 * s) / (1 + s);
-            ra_draw_triangle(v0, v2, vertex(mid_x, y2), shade_mode);
-            ra_draw_triangle(v2, vertex(mid_x, y2), v1, shade_mode);
+            vertex v_mid;
+            _get_split_vertex(v_mid, v0, v1, v2.y);
+            vertex v2_c = v2.clone();
+            vertex v_mid_c = v_mid.clone();
+            vertex v1_c = v1.clone();
+            ra_draw_triangle(v0, v2, v_mid, shade_mode);
+            ra_draw_triangle(v2_c, v_mid_c, v1_c, shade_mode);
         }
     }
 }

@@ -18,6 +18,7 @@ public:
 public:
     void set_color(const color &c);
     const color & get_color() const;
+    vertex clone() const;
 public:
     float x, y, z, w;
     float r, g, b, a;

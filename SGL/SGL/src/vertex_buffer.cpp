@@ -50,6 +50,11 @@ const color & vertex::get_color() const {
     return _c;
 }
 
+vertex vertex::clone() const {
+    vertex v = *this;
+    return v;
+}
+
 void vertex::_init() {
     x = y = z = 0;
     w = 1;

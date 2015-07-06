@@ -54,22 +54,26 @@ color texture::sampling(float u, float v) {
     uint r, g, b, a;
     switch (img->format) {
     case IMG_FORMAT_RGB:
+        ti *= 3;
         r = img->pixels[ti];
         g = img->pixels[ti + 1];
         b = img->pixels[ti + 2];
         return color(r, g, b, 255);
     case IMG_FORMAT_BGR:
+        ti *= 3;
         b = img->pixels[ti];
         g = img->pixels[ti + 1];
         r = img->pixels[ti + 2];
         return color(r, g, b, 255);
     case IMG_FORMAT_RGBA:
+        ti *= 4;
         r = img->pixels[ti];
         g = img->pixels[ti + 1];
         b = img->pixels[ti + 2];
         a = img->pixels[ti + 3];
         return color(r, g, b, a);
     case IMG_FORMAT_BGRA:
+        ti *= 4;
         b = img->pixels[ti];
         g = img->pixels[ti + 1];
         r = img->pixels[ti + 2];

@@ -9,6 +9,7 @@
 
 #include "sgl_math.h"
 #include "sgl_context.h"
+#include "texture.h"
 
 static std::vector<vertex_buffer*> s_vbs;
 static color s_current_color;
@@ -84,6 +85,9 @@ void sglFlush() {
         vb->draw(&mat_mvp, &s_viewport, s_current_shade_model);
     }
     _distroy_vbs();
+
+    s_current_texcoord_x = -1;
+    s_current_texcoord_y = -1;
 }
 
 void sglMatrixMode(SGL_MATRIX_MODE mode) {
@@ -185,13 +189,13 @@ void sglTexCoord2f(float x, float y) {
 }
 
 void sglGenTextures(uint n, uint *textures) {
-    
+    texture::get_instance()->gen_textures(n, textures);
 }
 
 void sglLoadTexture(uint texture, const char *path) {
-    
+    texture::get_instance()->load(texture, path);
 }
 
 void sglBindTexture(SGL_TEXTURE target, uint texture) {
-    
+    texture::get_instance()->bind(texture);
 }

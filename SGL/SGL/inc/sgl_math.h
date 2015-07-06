@@ -3,6 +3,10 @@
 
 #include "common_header.h"
 
+namespace sgl_math {
+    static float epsilon = 0.001f;
+}
+
 class vec2 {
 public:
     vec2();

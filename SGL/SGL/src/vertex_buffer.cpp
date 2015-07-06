@@ -108,11 +108,11 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport,
         break;
     case SGL_TRIANGLES:
         for (int i = 0; i < _verts.size(); i+=3) {
-            vertex *v0 = &_verts[i];
-            vertex *v1 = &_verts[i + 1];
-            vertex *v2 = &_verts[i + 2];
+            vertex v0 = _verts[i];
+            vertex v1 = _verts[i + 1];
+            vertex v2 = _verts[i + 2];
             
-            ra_draw_triangle(*v0, *v1, *v2, shade_mode);
+            ra_draw_triangle(v0, v1, v2, shade_mode);
         }
         break;
     case SGL_POINTS:
@@ -123,18 +123,19 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport,
         break;
     case SGL_QUADS:
         for (int i = 0; i < _verts.size(); i += 4) {
-            vertex *v0 = &_verts[i];
-            vertex *v1 = &_verts[i + 1];
-            vertex *v2 = &_verts[i + 2];
-            vertex *v3 = &_verts[i + 3];
+            vertex v0 = _verts[i];
+            vertex v1 = _verts[i + 1];
+            vertex v2 = _verts[i + 2];
+            vertex v3 = _verts[i + 3];
 
-            ra_draw_triangle(*v0, *v1, *v2, shade_mode);
-            ra_draw_triangle(*v0, *v2, *v3, shade_mode);
+            ra_draw_triangle(v0, v1, v2, shade_mode);
+            ra_draw_triangle(v0, v2, v3, shade_mode);
         }
         break;
     case SGL_POLYGON:
         break;
     default:
+        assert(false);
         break;
     }
    

@@ -1,6 +1,7 @@
 #include "rasterizer.h"
 
 #include <math.h>
+#include "texture.h"
 
 static inline void _swap_i(int *a, int *b) {
     int temp = *a;
@@ -13,6 +14,10 @@ static inline void _swap_vertex(vertex &va, vertex &vb) {
 }
 
 static inline float _lerp(float lv, float rv, float l) {
+    if (l < 0) 
+        l = 0;
+    else if (l > 1) 
+        l = 1;
     return lv * (1 - l) + rv * l;
 }
 
@@ -89,6 +94,13 @@ static void _smooth_draw_triangle_flat_bottom(vertex &v0, vertex &v1, vertex &v2
     float cbe = v0.b;
     float cas = v0.a;
     float cae = v0.a;
+    float tus = v0.u;
+    float tue = v0.u;
+    float tvs = v0.v;
+    float tve = v0.v;
+    bool texturing = (tus != -1 && tvs != -1);
+    color c;
+
     for (int y = y0; y < y_end; y++) {
         float ly = ((float)y - y0) / y_dis;
         xs = _lerp(x0, x1, ly);
@@ -101,14 +113,26 @@ static void _smooth_draw_triangle_flat_bottom(vertex &v0, vertex &v1, vertex &v2
         cbe = _lerp(v0.b, v2.b, ly);
         cas = _lerp(v0.a, v1.a, ly);
         cae = _lerp(v0.a, v2.a, ly);
+        if (texturing) {
+            tus = _lerp(v0.u, v1.u, ly);
+            tue = _lerp(v0.u, v2.u, ly);
+            tvs = _lerp(v0.v, v1.v, ly);
+            tve = _lerp(v0.v, v2.v, ly);
+        }
         float x_dis = xe - xs;
         for (int x = xs; x < xe; x++) {
             float lx = ((float)x - xs) / x_dis;
-            color c;
-            c.r = _lerp(crs, cre, lx);
-            c.g = _lerp(cgs, cge, lx);
-            c.b = _lerp(cbs, cbe, lx);
-            c.a = _lerp(cas, cae, lx);
+            if (!texturing) {
+                c.r = _lerp(crs, cre, lx);
+                c.g = _lerp(cgs, cge, lx);
+                c.b = _lerp(cbs, cbe, lx);
+                c.a = _lerp(cas, cae, lx);
+            }
+            else {
+                float u = _lerp(tus, tue, lx);
+                float v = _lerp(tvs, tve, lx);
+                c = texture::get_instance()->sampling(u, v);
+            }
             color_buffer::get_intance()->write_color(x, y, c);
         }
     }
@@ -188,6 +212,13 @@ static void _smooth_draw_triangle_flat_top(vertex &v0, vertex &v1, vertex &v2) {
     float cas = v0.a;
     float cae = v1.a;
     float y_dis = y2 - y0;
+    float tus = v0.u;
+    float tue = v1.u;
+    float tvs = v0.v;
+    float tve = v1.v;
+    bool texturing = (tus != -1 && tvs != -1);
+    color c;
+
     for (int y = y0; y < y2; y++) {
         float ly = (float(y) - y0) / y_dis;
         xs = _lerp(x0, x2, ly);
@@ -200,14 +231,26 @@ static void _smooth_draw_triangle_flat_top(vertex &v0, vertex &v1, vertex &v2) {
         cbe = _lerp(v1.b, v2.b, ly);
         cas = _lerp(v0.a, v2.a, ly);
         cae = _lerp(v1.a, v2.a, ly);
+        if (texturing) {
+            tus = _lerp(v0.u, v2.u, ly);
+            tue = _lerp(v1.u, v2.u, ly);
+            tvs = _lerp(v0.v, v2.v, ly);
+            tve = _lerp(v1.v, v2.v, ly);
+        }
         float x_dis = xe - xs;
         for (int x = xs; x < xe; x++) {
             float lx = ((float)x - xs) / x_dis;
-            color c;
-            c.r = _lerp(crs, cre, lx);
-            c.g = _lerp(cgs, cge, lx);
-            c.b = _lerp(cbs, cbe, lx);
-            c.a = _lerp(cas, cae, lx);
+            if (!texturing) {
+                c.r = _lerp(crs, cre, lx);
+                c.g = _lerp(cgs, cge, lx);
+                c.b = _lerp(cbs, cbe, lx);
+                c.a = _lerp(cas, cae, lx);
+            }
+            else {
+                float u = _lerp(tus, tue, lx);
+                float v = _lerp(tvs, tve, lx);
+                c = texture::get_instance()->sampling(u, v);
+            }
             color_buffer::get_intance()->write_color(x, y, c);
         }
     }
@@ -237,9 +280,11 @@ static void _get_split_vertex(vertex &v_ret, const vertex &va, const vertex &vb,
     v_ret.g = _lerp(va.g, vb.g, ly);
     v_ret.b = _lerp(va.b, vb.b, ly);
     v_ret.a = _lerp(va.a, vb.a, ly);
+    v_ret.u = _lerp(va.u, vb.u, ly);
+    v_ret.v = _lerp(va.v, vb.v, ly);
 }
 
-void ra_draw_triangle(vertex &v0, vertex &v1, vertex &v2, SGL_SHADE_MODEL shade_mode) {
+void ra_draw_triangle(vertex v0, vertex v1, vertex v2, SGL_SHADE_MODEL shade_mode) {
     float x0 = v0.x;
     float y0 = v0.y;
     float x1 = v1.x;

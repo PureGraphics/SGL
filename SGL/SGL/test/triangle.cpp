@@ -1,10 +1,11 @@
 #include "sgl.h"
 #include "sglut.h"
-#include "rasterizer.h"
 #include "sgl_math.h"
 
 #define WW 960
 #define WH 640
+
+static uint s_textures[1];
 
 static void _init() {
     sglShadeModel(SGL_SMOOTH);
@@ -15,6 +16,9 @@ static void _init() {
     sglLoadIdentity();
 
     sglViewport(0, 0, WW, WH);
+
+    sglGenTextures(1, s_textures);
+    sglLoadTexture(s_textures[0], "E:/texture1.jpg");
 }
 
 static float s_rot_angle = 0;
@@ -33,16 +37,29 @@ static void _on_draw() {
     s_scale += 0.16f;
     if (s_scale >= 2)
     s_scale = 1.0f;*/
-    //sglTranslatef(100, -200, 0);
     sgluLookAt(vec3(0, 0, -2), vec3(0, 0, 1), vec3(0, 1, 0));
 
-    sglBegin(SGL_TRIANGLES);
+    sglBindTexture(SGL_TEXTURE_2D, s_textures[0]);
+
+    sglBegin(SGL_QUADS);
+    //sglBegin(SGL_TRIANGLES);
+    
     sglColor3f(255, 0, 0);
+    sglTexCoord2f(0, 0);
     sglVertex3f(0, 1, 1);
+
     sglColor3f(0, 255, 0);
-    sglVertex3f(-1, 0, 1);
+    sglTexCoord2f(1, 0);
+    sglVertex3f(1, 1, 1);
+
     sglColor3f(0, 0, 255);
+    sglTexCoord2f(1, 1);
     sglVertex3f(1, 0, 1);
+
+    sglColor3f(255, 255, 255);
+    sglTexCoord2f(0, 1);
+    sglVertex3f(0, 0, 1);
+
     sglEnd();
 
     sglFlush();

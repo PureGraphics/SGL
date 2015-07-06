@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="inc\color_buffer.h" />
     <ClInclude Include="inc\common_header.h" />
+    <ClInclude Include="inc\depth_buffer.h" />
     <ClInclude Include="inc\image.h" />
     <ClInclude Include="inc\interface_buffer.h" />
     <ClInclude Include="inc\sgl_context.h" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\color_buffer.cpp" />
+    <ClCompile Include="src\depth_buffer.cpp" />
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\sgl_math.cpp" />
     <ClCompile Include="src\rasterizer.cpp" />

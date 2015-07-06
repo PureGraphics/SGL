@@ -8,12 +8,6 @@ vertex::vertex() {
     _init();
 }
 
-vertex::vertex(float x, float y) {
-    _init();
-    this->x = x;
-    this->y = y;
-}
-
 vertex::~vertex() {
     
 }
@@ -33,6 +27,8 @@ void vertex::swap(vertex &va, vertex &vb) {
     _swap_f(&va.g, &vb.g);
     _swap_f(&va.b, &vb.b);
     _swap_f(&va.a, &vb.a);
+    _swap_f(&va.u, &vb.u);
+    _swap_f(&va.v, &vb.v);
 }
 
 void vertex::set_color(const color &c) {
@@ -55,10 +51,16 @@ vertex vertex::clone() const {
     return v;
 }
 
+void vertex::set_texcoord(float u, float v) {
+    this->u = u;
+    this->v = v;
+}
+
 void vertex::_init() {
     x = y = z = 0;
     w = 1;
     r = g = b = a = 0;
+    u = v = -1;
 }
 
 vertex_buffer::vertex_buffer() 

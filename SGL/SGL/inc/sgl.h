@@ -22,5 +22,9 @@ void sgluPerspective(float fovy, float aspect, float n, float f);
 void sglViewport(uint x, uint y, uint w, uint h);
 
 void sglShadeModel(SGL_SHADE_MODEL mode);
+void sglTexCoord2f(float x, float y);
+void sglGenTextures(uint n, uint *textures);
+void sglLoadTexture(uint texture, const char *path);
+void sglBindTexture(SGL_TEXTURE target, uint texture);
 
 #endif

@@ -19,4 +19,8 @@ enum SGL_SHADE_MODEL {
     SGL_SMOOTH
 };
 
+enum SGL_TEXTURE {
+    SGL_TEXTURE_2D = 0,
+};
+
 #endif

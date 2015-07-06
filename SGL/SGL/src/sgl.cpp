@@ -17,6 +17,8 @@ static matrix4x4 s_mat_model_view;
 static matrix4x4 s_mat_projection;
 static sgl_viewport s_viewport;
 static SGL_SHADE_MODEL s_current_shade_model;
+static float s_current_texcoord_x;
+static float s_current_texcoord_y;
 
 static vertex_buffer * _get_current_vertex_buffer() {
     assert(s_vbs.size() > 0);
@@ -34,6 +36,8 @@ static void _distroy_vbs() {
 void sgl_init_context() {
     s_current_matrix_mode = SGL_MODELVIEW;
     s_current_shade_model = SGL_FLAT;
+    s_current_texcoord_x = -1;
+    s_current_texcoord_y = -1;
 }
 
 void sglClear() {
@@ -52,12 +56,7 @@ void sglEnd() {
 }
 
 void sglVertex2f(float x, float y) {
-    vertex_buffer *vb = _get_current_vertex_buffer();
-    vertex v;
-    v.x = x;
-    v.y = y;
-    v.set_color(s_current_color);
-    vb->add_vertex(v);
+    sglVertex3f(x, y, 0.0f);
 }
 
 void sglVertex3f(float x, float y, float z) {
@@ -67,6 +66,7 @@ void sglVertex3f(float x, float y, float z) {
     v.y = y;
     v.z = z;
     v.set_color(s_current_color);
+    v.set_texcoord(s_current_texcoord_x, s_current_texcoord_y);
     vb->add_vertex(v);
 }
 
@@ -177,4 +177,21 @@ void sglViewport(uint x, uint y, uint w, uint h) {
 
 void sglShadeModel(SGL_SHADE_MODEL mode) {
     s_current_shade_model = mode;
+}
+
+void sglTexCoord2f(float x, float y) {
+    s_current_texcoord_x = x;
+    s_current_texcoord_y = y;
+}
+
+void sglGenTextures(uint n, uint *textures) {
+    
+}
+
+void sglLoadTexture(uint texture, const char *path) {
+    
+}
+
+void sglBindTexture(SGL_TEXTURE target, uint texture) {
+    
 }

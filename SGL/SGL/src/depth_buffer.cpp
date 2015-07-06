@@ -37,3 +37,10 @@ bool depth_buffer::d_test(uint x, uint y, float d) {
     }
     return false;
 }
+
+void depth_buffer::clear() {
+    int sz = _buffer_w * _buffer_h;
+    for (int i = 0; i < sz; i++) {
+        _d_buffer[i] = 1.0f;
+    }
+}

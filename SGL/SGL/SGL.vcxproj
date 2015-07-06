@@ -105,7 +105,7 @@
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\vertex_buffer.cpp" />
-    <ClCompile Include="test\triangle.cpp" />
+    <ClCompile Include="test\test_primitive.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

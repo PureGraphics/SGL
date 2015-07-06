@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include "texture.h"
+#include "depth_buffer.h"
 
 static inline void _swap_i(int *a, int *b) {
     int temp = *a;
@@ -98,6 +99,8 @@ static void _smooth_draw_triangle_flat_bottom(vertex &v0, vertex &v1, vertex &v2
     float tue = v0.u;
     float tvs = v0.v;
     float tve = v0.v;
+    float ds = v0.z;
+    float de = v0.z;
     bool texturing = (tus != -1 && tvs != -1);
     color c;
 
@@ -119,9 +122,15 @@ static void _smooth_draw_triangle_flat_bottom(vertex &v0, vertex &v1, vertex &v2
             tvs = _lerp(v0.v, v1.v, ly);
             tve = _lerp(v0.v, v2.v, ly);
         }
+        ds = _lerp(v0.z, v1.z, ly);
+        de = _lerp(v0.z, v2.z, ly);
         float x_dis = xe - xs;
         for (int x = xs; x < xe; x++) {
             float lx = ((float)x - xs) / x_dis;
+            float d = _lerp(ds, de, lx);
+            if (!depth_buffer::get_instance()->d_test(x, y, d)) {
+                continue;
+            }
             if (!texturing) {
                 c.r = _lerp(crs, cre, lx);
                 c.g = _lerp(cgs, cge, lx);
@@ -216,6 +225,8 @@ static void _smooth_draw_triangle_flat_top(vertex &v0, vertex &v1, vertex &v2) {
     float tue = v1.u;
     float tvs = v0.v;
     float tve = v1.v;
+    float ds = v0.z;
+    float de = v1.z;
     bool texturing = (tus != -1 && tvs != -1);
     color c;
 
@@ -237,9 +248,15 @@ static void _smooth_draw_triangle_flat_top(vertex &v0, vertex &v1, vertex &v2) {
             tvs = _lerp(v0.v, v2.v, ly);
             tve = _lerp(v1.v, v2.v, ly);
         }
+        ds = _lerp(v0.z, v2.z, ly);
+        de = _lerp(v1.z, v2.z, ly);
         float x_dis = xe - xs;
         for (int x = xs; x < xe; x++) {
             float lx = ((float)x - xs) / x_dis;
+            float d = _lerp(ds, de, lx);
+            if (!depth_buffer::get_instance()->d_test(x, y, d)) {
+                continue;
+            }
             if (!texturing) {
                 c.r = _lerp(crs, cre, lx);
                 c.g = _lerp(cgs, cge, lx);

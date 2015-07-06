@@ -77,9 +77,6 @@
     <ClCompile Include="src\utils.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="test\triangle.cpp">
-      <Filter>test</Filter>
-    </ClCompile>
     <ClCompile Include="src\vertex_buffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -94,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="src\depth_buffer.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="test\test_primitive.cpp">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

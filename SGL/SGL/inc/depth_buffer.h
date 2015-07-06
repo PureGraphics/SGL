@@ -13,6 +13,7 @@ private:
 public:
     void set_viewport(int w, int h) override;
     bool d_test(uint x, uint y, float d);
+    void clear();
 private:
     float *_d_buffer;
 };

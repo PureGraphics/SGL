@@ -10,6 +10,7 @@
 #include "sgl_math.h"
 #include "sgl_context.h"
 #include "texture.h"
+#include "depth_buffer.h"
 
 static std::vector<vertex_buffer*> s_vbs;
 static color s_current_color;
@@ -43,10 +44,10 @@ void sgl_init_context() {
 
 void sglClear() {
     color_buffer::get_intance()->clear();
+    depth_buffer::get_instance()->clear();
 }
 
 void sglBegin(SGL_PRIMITIVE_TYPE type) {
-    s_vbs.clear();
     vertex_buffer *vb = new vertex_buffer();
     vb->set_primitive_type(type);
     s_vbs.push_back(vb);
@@ -67,7 +68,11 @@ void sglVertex3f(float x, float y, float z) {
     v.y = y;
     v.z = z;
     v.set_color(s_current_color);
-    v.set_texcoord(s_current_texcoord_x, s_current_texcoord_y);
+    if (s_current_texcoord_x != -1 && s_current_texcoord_y != -1) {
+        v.set_texcoord(s_current_texcoord_x, s_current_texcoord_y);
+        s_current_texcoord_x = -1;
+        s_current_texcoord_y = -1;
+    }
     vb->add_vertex(v);
 }
 

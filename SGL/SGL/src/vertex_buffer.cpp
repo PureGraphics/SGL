@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "rasterizer.h"
+#include "texture.h"
 
 vertex::vertex() {
     _init();
@@ -64,7 +65,8 @@ void vertex::_init() {
 }
 
 vertex_buffer::vertex_buffer() 
-:_primitive_type(SGL_PRIMITIVE_TYPE_NULL) {
+:_primitive_type(SGL_PRIMITIVE_TYPE_NULL), 
+_texture(0) {
     
 }
 
@@ -74,6 +76,14 @@ vertex_buffer::~vertex_buffer() {
 
 void vertex_buffer::set_primitive_type(SGL_PRIMITIVE_TYPE type) {
     _primitive_type = type;
+}
+
+void vertex_buffer::set_model_matrix(matrix4x4 mat) {
+    _mat_model = mat;
+}
+
+void vertex_buffer::set_texture(uint texture) {
+    _texture = texture;
 }
 
 void vertex_buffer::add_vertex(vertex v) {
@@ -88,11 +98,12 @@ SGL_PRIMITIVE_TYPE vertex_buffer::get_primitive_type() const {
     return _primitive_type;
 }
 
-void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport, SGL_SHADE_MODEL shade_mode) {
+void vertex_buffer::draw(const matrix4x4 *mat_view_proj, const sgl_viewport *viewport, SGL_SHADE_MODEL shade_mode) {
+    matrix4x4 mvp = _mat_model * (*mat_view_proj);
     for (int i = 0; i < _verts.size(); i++) {
         vertex *v = &_verts[i];
         vec4 vec(v->x, v->y, v->z, v->w);
-        vec = vec * (*mat_mvp);
+        vec = vec * mvp;
         v->x = vec.x / vec.w;
         v->y = vec.y / vec.w;
         v->z = vec.z / vec.w;
@@ -101,6 +112,8 @@ void vertex_buffer::draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport,
         v->x = (v->x + 1)*(viewport->w - viewport->x) / 2 + viewport->x;
         v->y = (v->y + 1)*(viewport->y - viewport->h) / 2 + viewport->h;
     }
+
+    texture::get_instance()->bind(_texture);
 
     switch (_primitive_type) {
     case SGL_PRIMITIVE_TYPE_NULL:

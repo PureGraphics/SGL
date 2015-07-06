@@ -15,12 +15,14 @@
 static std::vector<vertex_buffer*> s_vbs;
 static color s_current_color;
 static SGL_MATRIX_MODE s_current_matrix_mode;
-static matrix4x4 s_mat_model_view;
+static matrix4x4 s_mat_model;
+static matrix4x4 s_mat_view;
 static matrix4x4 s_mat_projection;
 static sgl_viewport s_viewport;
 static SGL_SHADE_MODEL s_current_shade_model;
 static float s_current_texcoord_x;
 static float s_current_texcoord_y;
+static uint s_current_binding_texture;
 
 static vertex_buffer * _get_current_vertex_buffer() {
     assert(s_vbs.size() > 0);
@@ -54,7 +56,9 @@ void sglBegin(SGL_PRIMITIVE_TYPE type) {
 }
 
 void sglEnd() {
-    //?
+    vertex_buffer *vb = _get_current_vertex_buffer();
+    vb->set_model_matrix(s_mat_model);
+    vb->set_texture(s_current_binding_texture);
 }
 
 void sglVertex2f(float x, float y) {
@@ -83,11 +87,10 @@ void sglColor3f(float r, float g, float b) {
 }
 
 void sglFlush() {
-    //For a quick test.
-    matrix4x4 mat_mvp = s_mat_model_view * s_mat_projection;
+    matrix4x4 mat_view_proj = s_mat_view * s_mat_projection;
     for (int i = 0; i < s_vbs.size(); i++) {
         vertex_buffer *vb = s_vbs[i];
-        vb->draw(&mat_mvp, &s_viewport, s_current_shade_model);
+        vb->draw(&mat_view_proj, &s_viewport, s_current_shade_model);
     }
     _distroy_vbs();
 
@@ -102,7 +105,7 @@ void sglMatrixMode(SGL_MATRIX_MODE mode) {
 void sglLoadIdentity() {
     switch (s_current_matrix_mode) {
     case SGL_MODELVIEW:
-        s_mat_model_view.identify();
+        s_mat_model.identify();
         break;
     case SGL_PROJECTION:
         s_mat_projection.identify();
@@ -116,7 +119,7 @@ void sglScalef(float x, float y, float z) {
     matrix4x4 s = matrix4x4::get_scale_matrix(x, y, z);
     switch (s_current_matrix_mode) {
     case SGL_MODELVIEW:
-        s_mat_model_view = s_mat_model_view * s;
+        s_mat_model = s_mat_model * s;
         break;
     case SGL_PROJECTION:
         s_mat_projection = s_mat_projection * s;
@@ -140,7 +143,7 @@ void sglRotatef(float angle, float x, float y, float z) {
 
     switch (s_current_matrix_mode) {
     case SGL_MODELVIEW:
-        s_mat_model_view = s_mat_model_view * r;
+        s_mat_model = s_mat_model * r;
         break;
     case SGL_PROJECTION:
         s_mat_projection = s_mat_projection * r;
@@ -154,7 +157,7 @@ void sglTranslatef(float x, float y, float z) {
     matrix4x4 t = matrix4x4::get_translation_matrix(x, y, z);
     switch (s_current_matrix_mode) {
     case SGL_MODELVIEW:
-        s_mat_model_view = s_mat_model_view * t;
+        s_mat_model = s_mat_model * t;
         break;
     case SGL_PROJECTION:
         s_mat_projection = s_mat_projection * t;
@@ -166,8 +169,7 @@ void sglTranslatef(float x, float y, float z) {
 
 void sgluLookAt(vec3 eye, vec3 target, vec3 up) {
     assert(s_current_matrix_mode == SGL_MODELVIEW);
-    matrix4x4 v = matrix4x4::get_view_matrix(eye, target, up);
-    s_mat_model_view = s_mat_model_view * v;
+    s_mat_view = matrix4x4::get_view_matrix(eye, target, up);
 }
 
 void sgluPerspective(float fovy, float aspect, float n, float f) {
@@ -202,5 +204,5 @@ void sglLoadTexture(uint texture, const char *path) {
 }
 
 void sglBindTexture(SGL_TEXTURE target, uint texture) {
-    texture::get_instance()->bind(texture);
+    s_current_binding_texture = texture;
 }

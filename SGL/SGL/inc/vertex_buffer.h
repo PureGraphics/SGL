@@ -35,13 +35,17 @@ public:
     ~vertex_buffer();
 public:
     void set_primitive_type(SGL_PRIMITIVE_TYPE type);
+    void set_model_matrix(matrix4x4 mat);
+    void set_texture(uint texture);
     void add_vertex(vertex v);
     void clear();
     SGL_PRIMITIVE_TYPE get_primitive_type() const;
-    void draw(const matrix4x4 *mat_mvp, const sgl_viewport *viewport, SGL_SHADE_MODEL shade_mode);
+    void draw(const matrix4x4 *mat_view_proj, const sgl_viewport *viewport, SGL_SHADE_MODEL shade_mode);
 private:
     std::vector<vertex> _verts;
     SGL_PRIMITIVE_TYPE _primitive_type;
+    matrix4x4 _mat_model;
+    uint _texture;
 };
 
 #endif

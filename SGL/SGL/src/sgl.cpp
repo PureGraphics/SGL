@@ -80,10 +80,18 @@ void sglVertex3f(float x, float y, float z) {
     vb->add_vertex(v);
 }
 
+void sglVertex3fv(const float *pointer) {
+    sglVertex3f(pointer[0], pointer[1], pointer[2]);
+}
+
 void sglColor3f(float r, float g, float b) {
     s_current_color.r = r;
     s_current_color.g = g;
     s_current_color.b = b;
+}
+
+void sglColor3fv(const float *pointer) {
+    sglColor3f(pointer[0], pointer[1], pointer[2]);
 }
 
 void sglFlush() {
@@ -193,6 +201,10 @@ void sglShadeModel(SGL_SHADE_MODEL mode) {
 void sglTexCoord2f(float x, float y) {
     s_current_texcoord_x = x;
     s_current_texcoord_y = y;
+}
+
+void sglTexCoord2fv(const float *pointer) {
+    sglTexCoord2f(pointer[0], pointer[1]);
 }
 
 void sglGenTextures(uint n, uint *textures) {

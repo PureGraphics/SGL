@@ -5,7 +5,7 @@
 #define WW 960
 #define WH 640
 
-static uint s_textures[2];
+static uint s_textures[3];
 
 static void _init() {
     sglShadeModel(SGL_SMOOTH);
@@ -18,9 +18,10 @@ static void _init() {
 
     sglViewport(0, 0, WW, WH);
 
-    sglGenTextures(2, s_textures);
+    sglGenTextures(3, s_textures);
     sglLoadTexture(s_textures[0], "E:/Girl.jpg");
     sglLoadTexture(s_textures[1], "E:/Carmack.jpg");
+    sglLoadTexture(s_textures[2], "E:/Overlay.jpg");
 }
 
 static float s_rot_angle = 0;
@@ -30,7 +31,28 @@ static void _on_draw() {
     sglClear();
     sglMatrixMode(SGL_MODELVIEW);
     sglLoadIdentity();
+    sglScalef(1.5, 1.5, 1.5);
+    sglTranslatef(0, 2.5, 1);
 
+    sglBindTexture(SGL_TEXTURE_2D, s_textures[2]);
+    sglBegin(SGL_QUADS);
+
+    sglTexCoord2f(0, 0);
+    sglVertex3f(-0.5, 0.5, 0.1);
+
+    sglTexCoord2f(1, 0);
+    sglVertex3f(0.5, 0.5, 0.1);
+
+    sglTexCoord2f(1, 1);
+    sglVertex3f(0.5, -0.5, 0.1);
+
+    sglTexCoord2f(0, 1);
+    sglVertex3f(-0.5, -0.5, 0.1);
+
+    sglEnd();
+
+    sglMatrixMode(SGL_MODELVIEW);
+    sglLoadIdentity();
     sglRotatef(s_rot_angle, 0, 1, 0);
     if (++s_rot_angle > 360)
         s_rot_angle = 0;

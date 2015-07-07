@@ -30,6 +30,9 @@ void depth_buffer::set_viewport(int w, int h) {
 }
 
 bool depth_buffer::d_test(uint x, uint y, float d) {
+    if (x >= _buffer_w || y >= _buffer_h) {
+        return false;
+    }
     uint i = y * _buffer_w + x;
     if (_d_buffer[i] > d) {
         _d_buffer[i] = d;
